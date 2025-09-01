@@ -45,38 +45,3 @@ COPY skills_job_dim
 FROM 'C:\Users\14312\Desktop\SQLProject\csv_files\skills_job_dim.csv'
 WITH (FORMAT csv, HEADER true, DELIMITER ',', ENCODING 'UTF8');
 
-SELECT 
-    COUNT(job_id),
-    EXTRACT(MONTH FROM job_posted_date) AS month
-FROM job_postings_fact
-GROUP BY month
-
-
-SELECT *
-FROM job_postings_fact
-LIMIT 55
-
-SELECT 
-    job_title_short,
-    job_location,
-    CASE 
-        WHEN job_location = 'Anywhere' THEN 'remote'
-        WHEN job_location LIKE 'New York%' THEN 'local'
-        ELSE 'others'
-    END AS job_type  
-FROM job_postings_fact      
-LIMIT 15 
-
-SELECT * 
-FROM skills_job_dim
-LIMIT 15 
-
-SELECT skills_dim.skills,jobs
-FROM skills_dim
-WHERE skills_dim.skills IN (SELECT 
-    COUNT(job_id) as jobs,
-    FROM skills_job_dim
-    GROUP BY skills_job_dim.skill_id
-)
-
-
